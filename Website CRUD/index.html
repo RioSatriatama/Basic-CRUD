@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript CRUD Operations</title>
+    <style>
+        .error {color: #FF0000;}
+    </style>
+</head>
+<body>
+
+<h2>JavaScript CRUD Operations</h2>
+
+<p><span class="error">*</span> required field.</p>
+<form name="frmProduct" action="" method="post">
+    Product ID: <input type="text" name="productid">
+    <br><br>
+    Product Name: <input type="text" name="productname">
+    <br><br>
+    Price: <input type="text" name="price">
+    <br><br>
+    <input type="button" value="Submit" onclick="addProduct()">
+</form>
+
+<table id="tblProducts" border="1">
+    <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Action</th>
+    </tr>
+</table>
+
+<script>
+    let products = [];
+
+    function addProduct() {
+        let productid = document.frmProduct.productid.value;
+        let productname = document.frmProduct.productname.value;
+        let price = document.frmProduct.price.value;
+
+        if (productid == "" || productname == "" || price == "") {
+            alert("All fields are required.");
+            return;
+        }
+
+        let product = {
+            id: productid,
+            name: productname,
+            price: price
+        };
+
+        products.push(product);
+
+        showProducts();
+
+        document.frmProduct.productid.value = "";
+        document.frmProduct.productname.value = "";
+        document.frmProduct.price.value = "";
+    }
+
+    function showProducts() {
+        let tblProducts = document.getElementById("tblProducts");
+
+        for (let i = 1; i < tblProducts.rows.length; i++) {
+            tblProducts.deleteRow(i);
+        }
+
+        for (let i = 0; i < products.length; i++) {
+            let row = tblProducts.insertRow(i + 1);
+
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            let cell3 = row.insertCell(2);
+            let cell4 = row.insertCell(3);
+
+            cell1.innerHTML = products[i].id;
+            cell2.innerHTML = products[i].name;
+            cell3.innerHTML = products[i].price;
+            cell4.innerHTML = '<input type="button" value="Delete" onclick="deleteProduct(' + i + ')">';
+        }
+    }
+
+    function deleteProduct(id) {
+        products.splice(id, 1);
+        showProducts();
+    }
+</script>
+
+</body>
+</html>
